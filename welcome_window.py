@@ -32,7 +32,7 @@ class Ui_MainWindow(object):
         font.setItalic(False)
         self.label.setFont(font)
         self.label.setStyleSheet(u"font: 36pt \"MS Shell Dig 2\"; color: rgb(255, 255, 255)")
-        self.loginPushButton = QPushButton(self.centralwidget, clicked = lambda: self.log_in_button_pushed(MainWindow))
+        self.loginPushButton = QPushButton(self.centralwidget, clicked = lambda: self.log_in_button_clicked(MainWindow))
         self.loginPushButton.setObjectName(u"loginPushButton")
         self.loginPushButton.setGeometry(QRect(260, 230, 251, 41))
         font1 = QFont()
@@ -41,18 +41,28 @@ class Ui_MainWindow(object):
         font1.setBold(False)
         font1.setItalic(False)
         self.loginPushButton.setFont(font1)
-        self.loginPushButton.setStyleSheet(u"border-radius:20px;\n"
+        self.loginPushButton.setStyleSheet(u"QPushButton {\n"
+"border-radius:20px;\n"
 "background-color: rgb(170, 255, 255);\n"
 "font: 14pt \"MS Shell Dlg 2\";\n"
-"color: rgb(0, 0, 0);")
-        self.createPushButton = QPushButton(self.centralwidget, clicked = lambda: self.create_an_account_button_pushed(MainWindow))
+"color: rgb(0, 0, 0);\n"
+"}\n"
+"QPushButton:hover {\n"
+"background-color: rgb(200, 255, 255);\n"
+"}")
+        self.createPushButton = QPushButton(self.centralwidget, clicked = lambda: self.create_an_account_button_clicked(MainWindow))
         self.createPushButton.setObjectName(u"createPushButton")
         self.createPushButton.setGeometry(QRect(260, 310, 251, 41))
         self.createPushButton.setFont(font1)
-        self.createPushButton.setStyleSheet(u"border-radius:20px;\n"
+        self.createPushButton.setStyleSheet(u"QPushButton {\n"
+"border-radius:20px;\n"
 "background-color: rgb(170, 255, 255);\n"
 "font: 14pt \"MS Shell Dlg 2\";\n"
-"color: rgb(0, 0, 0);")
+"color: rgb(0, 0, 0);\n"
+"}\n"
+"QPushButton:hover {\n"
+"background-color: rgb(200, 255, 255);\n"
+"}")
         self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(220, 130, 341, 31))
@@ -68,6 +78,8 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        center(MainWindow)
+
         self.retranslateUi(MainWindow)
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -81,14 +93,14 @@ class Ui_MainWindow(object):
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Sign in or create a new account", None))
     # retranslateUi
 
-    def log_in_button_pushed(self, window):
+    def log_in_button_clicked(self, window):
         window.close()
         self.window = QMainWindow()
         self.ui = Ui_LoginWindow()
         self.ui.setupUi(self.window)
         self.window.show()
     
-    def create_an_account_button_pushed(self, window):
+    def create_an_account_button_clicked(self, window):
         window.close()
         self.window = QMainWindow()
         self.ui = Ui_AddUserWindow()
