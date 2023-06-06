@@ -58,25 +58,7 @@ def login_success(login: str, password: str):
     if result:
          return True
     return False
-'''
 
-def add_task(task: Task):
-    conn = sqlite3.connect(DatabaseConfig.DATABASE_NAME)
-    c = conn.cursor() 
-    c.execute("INSERT INTO Tasks (title, category, description, priority, deadline, completed) VALUES (?, ?, ?, ?, ?, ?)",
-              (task.title, task.category, task.description, task.priority, task.deadline, task.completed))
-    conn.commit()
-    conn.close()
- 
-def get_tasks():
-    conn = sqlite3.connect(DatabaseConfig.DATABASE_NAME)
-    c = conn.cursor()
-    c.execute("SELECT * FROM Tasks")
-    tasks = c.fetchall()
-    conn.commit()
-    conn.close()   
-    return tasks
-'''
 def get_tasks():
     conn = sqlite3.connect(DatabaseConfig.DATABASE_NAME)
     c = conn.cursor()
