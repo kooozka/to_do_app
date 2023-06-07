@@ -68,7 +68,7 @@ def get_tasks():
     conn.close()
     tasks = []
     for db_task in db_tasks:
-          task = Task(db_task[0], db_task[1], task_manager.Categories(db_task[2]), db_task[3], task_manager.Priority(db_task[4]), db_task[5], db_task[6])
+          task = Task(db_task[0], db_task[1], task_manager.Categories(db_task[2]), db_task[3], task_manager.Priority(db_task[4]), db_task[5], db_task[7])
           tasks.append(task)
     return tasks
 
@@ -100,3 +100,12 @@ def update_task(id, title: str, category, description: str, priority, deadline: 
               (title, category, description, priority, deadline, login, id))
     conn.commit()
     conn.close()
+
+def get_users():
+    conn = sqlite3.connect(DatabaseConfig.DATABASE_NAME)
+    c = conn.cursor()
+    c.execute("SELECT login FROM Users")  
+    logins = c.fetchall()
+    conn.commit()
+    conn.close()
+    return [login[0] for login in logins if login[0] != "ADMINISTRATOR"]

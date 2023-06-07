@@ -103,7 +103,7 @@ class Ui_MainWindow(object):
     def create_an_account_button_clicked(self, window):
         window.close()
         self.window = QMainWindow()
-        self.ui = Ui_AddUserWindow()
+        self.ui = Ui_AddUserWindow(self.log_in_button_clicked)
         self.ui.setupUi(self.window)
         self.window.show()
 

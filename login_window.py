@@ -8,7 +8,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QMainWindow,
     QPushButton, QSizePolicy, QStatusBar, QWidget, QMessageBox)
 import data_manager, task_manager, datetime
-#from to_do_app import Ui_MainWindow
+from to_do_app_window import Ui_MainWindow
+from administrator_view import Ui_AdministratorMainWindow
 from add_user_window import Ui_AddUserWindow
 from center_window import center
 
@@ -91,7 +92,7 @@ class Ui_LoginWindow(object):
         self.label_5.setFont(font)
         self.label_5.setStyleSheet(u"font: 10pt \"MS Shell Dig2\";\n"
 "color: rgb(0,0,0);")
-        self.createAccountPushButton = QPushButton(self.centralwidget, clicked = lambda: self.createAccountPushButton(LoginWindow))
+        self.createAccountPushButton = QPushButton(self.centralwidget, clicked = lambda: self.create_an_account_button_clicked(LoginWindow))
         self.createAccountPushButton.setObjectName(u"createAccountPushButton")
         self.createAccountPushButton.setGeometry(QRect(240, 460, 301, 41))
         self.createAccountPushButton.setStyleSheet(u"QPushButton {\n"
@@ -107,10 +108,16 @@ class Ui_LoginWindow(object):
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(280, 430, 221, 17))
         self.label_2.setStyleSheet(u"font: 12pt \"MS Shell Dig 2\"; color: rgb(255, 255, 255)")
+        self.errorLabel = QLabel(self.centralwidget)
+        self.errorLabel.setObjectName(u"errorLabel")
+        self.errorLabel.setGeometry(QRect(240, 350, 301, 16))
+        self.errorLabel.setStyleSheet(u"font: 12pt \"MS Shell Dig 2\"; color: red;")
         LoginWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(LoginWindow)
         self.statusbar.setObjectName(u"statusbar")
         LoginWindow.setStatusBar(self.statusbar)
+
+        center(LoginWindow)
 
         self.retranslateUi(LoginWindow)
 
@@ -133,44 +140,53 @@ class Ui_LoginWindow(object):
         errorDialog.setWindowTitle("Information")
         taskManager = task_manager.TaskManager()
         taskManager.add_tasks(data_manager.get_user_tasks(self.usernameLineEdit.text()))
-        nearest_task = taskManager.get_tasks_sorted_by_deadline()[0]
-        deadline = datetime.datetime.strptime(nearest_task.deadline, "%Y-%m-%d %H:%M:%S")
-        time_difference = (deadline - datetime.datetime.now()).total_seconds()
-        if time_difference > 0:
-            errorDialog.setText("Your incoming task " + nearest_task.title + " deadline in: " + str(time_difference/3600) + " hours")
-        else:
-            errorDialog.setText("Your task " + nearest_task.title + " finished " + str(round(abs(time_difference/3600), 2)) + " hours ago")
-        errorDialog.setStandardButtons(QMessageBox.Ok)
-        errorDialog.setDefaultButton(QMessageBox.Ok)
-        errorDialog.exec()  
+        sorted_tasks = taskManager.get_tasks_sorted_by_deadline()
+        if sorted_tasks:
+            nearest_task = sorted_tasks[0]
+            deadline = datetime.datetime.strptime(nearest_task.deadline, "%Y-%m-%d %H:%M:%S")
+            time_difference = (deadline - datetime.datetime.now()).total_seconds()
+            if time_difference > 0:
+                errorDialog.setText("Your incoming task " + nearest_task.title + " deadline in: " + str(round(time_difference/3600, 2)) + " hours")
+            else:
+                errorDialog.setText("Your task " + nearest_task.title + " finished " + str(round(abs(time_difference/3600), 2)) + " hours ago")
+            errorDialog.setStandardButtons(QMessageBox.Ok)
+            errorDialog.setStyleSheet("""
+                                    QMessageBox{
+                                        background-color: rgb(170, 255, 255);
+                                        border-radius: 5px;
+                                        padding: 10px 20px;
+                                        }
+                                        font: 11pt; color: black""")
+            errorDialog.exec()  
+
+    def log_in(self, window):
+        window.close()
+        self.window = QMainWindow()
+        self.ui = Ui_LoginWindow()
+        self.ui.setupUi(self.window)
+        self.window.show()
 
     def log_in_button_clicked(self, window):
         print(data_manager.login_success(self.usernameLineEdit.text(), self.passwordLineEdit.text()))
         if data_manager.login_success(self.usernameLineEdit.text(), self.passwordLineEdit.text()):
             window.close()
             self.window = QMainWindow()
-            #self.ui = Ui_MainWindow(self.usernameLineEdit.text(), self.show_incoming_task)
+            if self.usernameLineEdit.text() == "ADMINISTRATOR":
+                self.ui = Ui_AdministratorMainWindow()
+            else:
+                self.ui = Ui_MainWindow(self.usernameLineEdit.text(), self.log_in)
             self.ui.setupUi(self.window)
             self.window.show()
             self.show_incoming_task()
         elif not self.usernameLineEdit.text() or not self.passwordLineEdit.text():
-            errorDialog = QMessageBox()
-            errorDialog.setWindowTitle("Error")
-            errorDialog.setText("Fulfill all the data")
-            errorDialog.setStandardButtons(QMessageBox.Ok)
-            errorDialog.setDefaultButton(QMessageBox.Ok)
-            errorDialog.exec()
+            self.errorLabel.setText("Input all the data")
         else:
-            errorDialog = QMessageBox()
-            errorDialog.setWindowTitle("Error")
-            errorDialog.setText("Incorrect username or password")
-            errorDialog.setStandardButtons(QMessageBox.Ok)
-            errorDialog.setDefaultButton(QMessageBox.Ok)
-            errorDialog.exec()
+            self.errorLabel.setText("Incorrect username or password")
 
+    
     def create_an_account_button_clicked(self, window):
         window.close()
         self.window = QMainWindow()
-        self.ui = Ui_AddUserWindow()
+        self.ui = Ui_AddUserWindow(self.log_in)
         self.ui.setupUi(self.window)
         self.window.show()
