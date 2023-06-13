@@ -14,6 +14,9 @@ from add_user_window import Ui_AddUserWindow
 from center_window import center
 
 class Ui_LoginWindow(object):
+    def __init__(self, add_user_window, welcome) -> None:
+        self.add_user_window = add_user_window
+        self.welcome = welcome
     def setupUi(self, LoginWindow):
         if not LoginWindow.objectName():
             LoginWindow.setObjectName(u"LoginWindow")
@@ -92,7 +95,7 @@ class Ui_LoginWindow(object):
         self.label_5.setFont(font)
         self.label_5.setStyleSheet(u"font: 10pt \"MS Shell Dig2\";\n"
 "color: rgb(0,0,0);")
-        self.createAccountPushButton = QPushButton(self.centralwidget, clicked = lambda: self.create_an_account_button_clicked(LoginWindow))
+        self.createAccountPushButton = QPushButton(self.centralwidget, clicked = lambda: self.add_user_window(LoginWindow))
         self.createAccountPushButton.setObjectName(u"createAccountPushButton")
         self.createAccountPushButton.setGeometry(QRect(240, 460, 301, 41))
         self.createAccountPushButton.setStyleSheet(u"QPushButton {\n"
@@ -159,22 +162,15 @@ class Ui_LoginWindow(object):
                                         font: 11pt; color: black""")
             errorDialog.exec()  
 
-    def log_in(self, window):
-        window.close()
-        self.window = QMainWindow()
-        self.ui = Ui_LoginWindow()
-        self.ui.setupUi(self.window)
-        self.window.show()
 
     def log_in_button_clicked(self, window):
-        print(data_manager.login_success(self.usernameLineEdit.text(), self.passwordLineEdit.text()))
         if data_manager.login_success(self.usernameLineEdit.text(), self.passwordLineEdit.text()):
             window.close()
             self.window = QMainWindow()
             if self.usernameLineEdit.text() == "ADMINISTRATOR":
-                self.ui = Ui_AdministratorMainWindow()
+                self.ui = Ui_AdministratorMainWindow(self.welcome)
             else:
-                self.ui = Ui_MainWindow(self.usernameLineEdit.text(), self.log_in)
+                self.ui = Ui_MainWindow(self.usernameLineEdit.text(), self.welcome)
             self.ui.setupUi(self.window)
             self.window.show()
             self.show_incoming_task()
@@ -182,11 +178,3 @@ class Ui_LoginWindow(object):
             self.errorLabel.setText("Input all the data")
         else:
             self.errorLabel.setText("Incorrect username or password")
-
-    
-    def create_an_account_button_clicked(self, window):
-        window.close()
-        self.window = QMainWindow()
-        self.ui = Ui_AddUserWindow(self.log_in)
-        self.ui.setupUi(self.window)
-        self.window.show()

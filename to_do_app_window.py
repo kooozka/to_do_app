@@ -281,6 +281,7 @@ class Ui_MainWindow(object):
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Category", None))
         self.logOutPushButton.setText(QCoreApplication.translate("MainWindow", u"\u23cf", None))
     # retranslateUi
+    
     def get_sorted_tasks(self, sorting_method):
         taskManager = task_manager.TaskManager()
         taskManager.add_tasks(data_manager.get_user_tasks(self.username))
@@ -291,16 +292,6 @@ class Ui_MainWindow(object):
         return tasks
     
     def get_tasks(self):
-        #TU METODKA DO WYDZIELENIA
-        '''
-        taskManager = task_manager.TaskManager()
-        taskManager.add_tasks(data_manager.get_user_tasks(self.username))
-        current_sorting_method = self.comboBox.currentText()
-        if current_sorting_method == "Priority":
-            tasks = taskManager.get_tasks_sorted_by_priority()
-        else:
-            tasks = taskManager.get_tasks_sorted_by_deadline()
-        '''    
         tasks = self.get_sorted_tasks(self.comboBox.currentText())
         tasks = [str(task) for task in tasks]
         self.listView.setModel(QStringListModel(tasks))
@@ -314,7 +305,7 @@ class Ui_MainWindow(object):
             task = tasks[index.row()]
         else:
             tasks = taskManager.get_tasks_sorted_by_priority()
-            task = tasks[index.row()]
+        task = tasks[index.row()]
         self.titleTextBrowser.setText(task.title)
         self.descriptionTextBrowser.setText(task.description)
         self.categoryTextBrowser.setText(task.category.name)
@@ -370,22 +361,9 @@ class Ui_MainWindow(object):
         self.get_tasks()
 
     def edit_button_clicked(self):
-        taskManager = task_manager.TaskManager()
-        taskManager.add_tasks(data_manager.get_user_tasks(self.username))
         current_sorting_method = self.comboBox.currentText()
-        print(current_sorting_method)
-        if current_sorting_method == "Priority":
-            tasks = taskManager.get_tasks_sorted_by_priority()
-        else:
-            tasks = taskManager.get_tasks_sorted_by_deadline()
+        tasks = self.get_sorted_tasks(current_sorting_method)
         self.window = QMainWindow()
         self.ui = Ui_EditTaskWindow(tasks[self.listView.currentIndex().row()].task_id, self.titleTextBrowser.toPlainText(), self.descriptionTextBrowser.toPlainText(), self.deadlineTextBrowser.toPlainText(), self.categoryTextBrowser.toPlainText(), self.priorityTextBrowser.toPlainText(), self.username, self.get_tasks)
         self.ui.setupUi(self.window)
         self.window.show()    
-
-    def log_out_button_clicked(self, window):
-        window.close()
-        self.window = QMainWindow()
-        self.ui = self.login_window()
-        self.ui.setupUi(self.window)
-        self.window.show()

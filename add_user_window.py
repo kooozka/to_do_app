@@ -1,13 +1,3 @@
-# -*- coding: utf-8 -*-
-
-################################################################################
-## Form generated from reading UI file 'AddUserWindow.ui'
-##
-## Created by: Qt User Interface Compiler version 6.5.0
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
-
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
@@ -22,8 +12,9 @@ import data_manager, sqlite3
 from center_window import center
 
 class Ui_AddUserWindow(object):
-    def __init__(self, login_window) -> None:
+    def __init__(self, login_window, welcome) -> None:
         self.login_window = login_window
+        self.welcome = welcome
     def setupUi(self, AddUserWindow):
         if not AddUserWindow.objectName():
             AddUserWindow.setObjectName(u"AddUserWindow")
@@ -173,7 +164,7 @@ class Ui_AddUserWindow(object):
                 data_manager.add_user(username, password)
                 window.close()
                 self.window = QMainWindow()
-                self.ui = Ui_MainWindow(self.usernameLineEdit.text())
+                self.ui = Ui_MainWindow(self.usernameLineEdit.text(), self.welcome)
                 self.ui.setupUi(self.window)
                 self.window.show()
             except(sqlite3.IntegrityError):

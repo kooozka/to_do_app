@@ -26,6 +26,8 @@ def create_database():
                 password TEXT
                 )
         ''')
+        c.execute("INSERT INTO Users (login, password) VALUES (?, ?)",
+              ("ADMINISTRATOR", "123"))
         conn.commit()
         conn.close()
 

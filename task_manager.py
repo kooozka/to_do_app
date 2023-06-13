@@ -12,6 +12,7 @@ class Categories(Enum):
     MEETINGS = 3
     WORK = 4
     HOME = 5
+    SCHOOL = 6
 
 class Task:
     def __init__(self, task_id: int, title: str, category: Categories, description: str, priority: Priority, deadline: datetime, user_login: str):
@@ -23,14 +24,8 @@ class Task:
         self.deadline = deadline
         self.user_login = user_login
 
-    def mark_as_completed(self):
-        self.completed = True
-
-    def mark_as_incompleted(self):
-        self.completed = False
-
     def __str__(self) -> str:
-        return f"{self.task_id}    {self.title}\t   \t    {self.priority.name}       \t  {self.deadline}"
+        return f"{self.title}\t    \t    {self.priority.name}       \t  {self.deadline}"
     
 class TaskManager:
     def __init__(self):

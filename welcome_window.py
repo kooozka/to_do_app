@@ -96,20 +96,31 @@ class Ui_MainWindow(object):
     def log_in_button_clicked(self, window):
         window.close()
         self.window = QMainWindow()
-        self.ui = Ui_LoginWindow()
+        self.ui = Ui_LoginWindow(self.create_an_account_button_clicked, self.welcome)
         self.ui.setupUi(self.window)
         self.window.show()
     
     def create_an_account_button_clicked(self, window):
         window.close()
         self.window = QMainWindow()
-        self.ui = Ui_AddUserWindow(self.log_in_button_clicked)
+        self.ui = Ui_AddUserWindow(self.log_in_button_clicked, self.welcome)
+        self.ui.setupUi(self.window)
+        self.window.show()
+
+    def welcome(self, window):
+        window.close()
+        self.window = QMainWindow()
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self.window)
         self.window.show()
 
 
 if __name__ == "__main__":
-    import sys
+    import sys, os, data_manager
+    db_name = data_manager.DatabaseConfig.DATABASE_NAME
+    if not os.path.exists(f"/home/student/Dokumenty/to_do_app/{db_name}"):
+        data_manager.create_database()
+    print(f"/home/student/Dokumenty/to_do_app/{db_name}")
     app = QApplication(sys.argv)
     MainWindow = QMainWindow()
     ui = Ui_MainWindow()

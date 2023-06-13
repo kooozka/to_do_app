@@ -14,6 +14,8 @@ from edit_task_window import Ui_EditTaskWindow
 from center_window import center
 
 class Ui_AdministratorMainWindow(object):
+    def __init__(self, login_window) -> None:
+        self.login_window = login_window
     def setupUi(self, AdministratorMainWindow):
         if not AdministratorMainWindow.objectName():
             AdministratorMainWindow.setObjectName(u"AdministratorMainWindow")
@@ -244,6 +246,18 @@ class Ui_AdministratorMainWindow(object):
         self.label_13.setFont(font5)
         self.label_13.setStyleSheet(u"font: 10pt \"MS Shell Dig2\";\n"
 "color: rgb(0,0,0);")
+        self.logOutPushButton = QPushButton(self.centralwidget, clicked = lambda: self.login_window(AdministratorMainWindow))
+        self.logOutPushButton.setObjectName(u"logOutPushButton")
+        self.logOutPushButton.setGeometry(QRect(890, 30, 61, 41))
+        self.logOutPushButton.setStyleSheet(u"QPushButton {\n"
+"border-radius:20px;\n"
+"background-color: rgb(170, 255, 255);\n"
+"font: 20pt \"MS Shell Dlg 2\";\n"
+"color: rgb(0, 0, 0);\n"
+"}\n"
+"QPushButton:hover {\n"
+"background-color: rgb(200, 255, 255);\n"
+"}")
         AdministratorMainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(AdministratorMainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -277,6 +291,7 @@ class Ui_AdministratorMainWindow(object):
         self.label_11.setText(QCoreApplication.translate("AdministratorMainWindow", u"Deadline", None))
         self.label_12.setText(QCoreApplication.translate("AdministratorMainWindow", u"Category", None))
         self.label_13.setText(QCoreApplication.translate("AdministratorMainWindow", u"User", None))
+        self.logOutPushButton.setText(QCoreApplication.translate("MainWindow", u"\u23cf", None))
     # retranslateUi
 
     def get_sorted_tasks(self, sorting_method):
@@ -289,16 +304,6 @@ class Ui_AdministratorMainWindow(object):
         return tasks
     
     def get_tasks(self):
-        #TU METODKA DO WYDZIELENIA
-        '''
-        taskManager = task_manager.TaskManager()
-        taskManager.add_tasks(data_manager.get_user_tasks(self.username))
-        current_sorting_method = self.comboBox.currentText()
-        if current_sorting_method == "Priority":
-            tasks = taskManager.get_tasks_sorted_by_priority()
-        else:
-            tasks = taskManager.get_tasks_sorted_by_deadline()
-        '''    
         tasks = self.get_sorted_tasks(self.comboBox.currentText())
         tasks = [str(task) for task in tasks]
         self.listView.setModel(QStringListModel(tasks))
@@ -370,14 +375,8 @@ class Ui_AdministratorMainWindow(object):
         self.get_tasks()
 
     def edit_button_clicked(self):
-        taskManager = task_manager.TaskManager()
-        taskManager.add_tasks(data_manager.get_tasks())
         current_sorting_method = self.comboBox.currentText()
-        print(current_sorting_method)
-        if current_sorting_method == "Priority":
-            tasks = taskManager.get_tasks_sorted_by_priority()
-        else:
-            tasks = taskManager.get_tasks_sorted_by_deadline()
+        tasks = self.get_sorted_tasks(current_sorting_method)
         self.window = QMainWindow()
         self.ui = Ui_EditTaskWindow(tasks[self.listView.currentIndex().row()].task_id, self.titleTextBrowser.toPlainText(), self.descriptionTextBrowser.toPlainText(), self.deadlineTextBrowser.toPlainText(), self.categoryTextBrowser.toPlainText(), self.priorityTextBrowser.toPlainText(), self.userTextBrowser.toPlainText(), self.get_tasks)
         self.ui.setupUi(self.window)
