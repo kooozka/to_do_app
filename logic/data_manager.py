@@ -1,5 +1,5 @@
-import sqlite3, datetime, task_manager
-from task_manager import Task
+import sqlite3, datetime, logic.task_manager as task_manager
+from logic.task_manager import Task
 
 class DatabaseConfig:
         DATABASE_NAME = "todoapp_db"

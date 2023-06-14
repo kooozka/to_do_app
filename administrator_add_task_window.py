@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QDateTimeEdit, QLabel,
     QLineEdit, QMainWindow, QPushButton, QSizePolicy,
     QStatusBar, QTextEdit, QWidget)
 
-import task_manager, data_manager, datetime
+import logic.task_manager as task_manager, logic.data_manager as data_manager, datetime
 
 class Ui_AdministratorAddTaskWindow(object):
     def __init__(self, callback) -> None:

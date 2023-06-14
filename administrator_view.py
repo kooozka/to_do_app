@@ -8,7 +8,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QLabel,
     QListView, QMainWindow, QPushButton, QSizePolicy,
     QStatusBar, QTextBrowser, QWidget)
-import task_manager, data_manager, datetime
+import logic.task_manager as task_manager, logic.data_manager as data_manager, datetime
 from administrator_add_task_window import Ui_AdministratorAddTaskWindow
 from edit_task_window import Ui_EditTaskWindow
 from center_window import center
@@ -323,7 +323,6 @@ class Ui_AdministratorMainWindow(object):
         self.categoryTextBrowser.setText(task.category.name)
         self.deadlineTextBrowser.setText(str(task.deadline))
         self.priorityTextBrowser.setText(task.priority.name)
-        print(task.user_login)
         self.userTextBrowser.setText(task.user_login)
         self.check_previous_button()
         self.check_next_button()

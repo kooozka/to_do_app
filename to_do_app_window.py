@@ -8,7 +8,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QLabel,
     QListView, QMainWindow, QPushButton, QSizePolicy,
     QStatusBar, QTextBrowser, QWidget, QDialogButtonBox)
-import task_manager, data_manager, datetime
+import logic.task_manager as task_manager, logic.data_manager as data_manager, datetime
 from add_task_window import Ui_AddTaskWindow
 from edit_task_window import Ui_EditTaskWindow
 from center_window import center
@@ -281,7 +281,7 @@ class Ui_MainWindow(object):
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Category", None))
         self.logOutPushButton.setText(QCoreApplication.translate("MainWindow", u"\u23cf", None))
     # retranslateUi
-    
+
     def get_sorted_tasks(self, sorting_method):
         taskManager = task_manager.TaskManager()
         taskManager.add_tasks(data_manager.get_user_tasks(self.username))

@@ -7,6 +7,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
     QSizePolicy, QStatusBar, QWidget)
+import sys
 from login_window import Ui_LoginWindow
 from add_user_window import Ui_AddUserWindow
 from center_window import center
@@ -114,18 +115,10 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.window)
         self.window.show()
 
-
-if __name__ == "__main__":
-    import sys, os, data_manager
-    db_name = data_manager.DatabaseConfig.DATABASE_NAME
-    if not os.path.exists(f"/home/student/Dokumenty/to_do_app/{db_name}"):
-        data_manager.create_database()
-    print(f"/home/student/Dokumenty/to_do_app/{db_name}")
-    app = QApplication(sys.argv)
-    MainWindow = QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec())
-
-
+    def run():
+        app = QApplication(sys.argv)
+        MainWindow = QMainWindow()
+        ui = Ui_MainWindow()
+        ui.setupUi(MainWindow)
+        MainWindow.show()
+        sys.exit(app.exec())

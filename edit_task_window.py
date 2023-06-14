@@ -8,7 +8,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QComboBox, QDateTimeEdit, QLabel,
     QLineEdit, QMainWindow, QPushButton, QSizePolicy,
     QStatusBar, QTextEdit, QWidget)
-import task_manager, data_manager, datetime
+import logic.task_manager as task_manager, logic.data_manager as data_manager, datetime
 
 class Ui_EditTaskWindow(object):
     def __init__(self, id, title, description, deadline, category, priority, login, callback) -> None:

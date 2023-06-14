@@ -7,7 +7,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QMainWindow,
     QPushButton, QSizePolicy, QStatusBar, QWidget, QMessageBox)
-import data_manager, task_manager, datetime
+import logic.data_manager as data_manager, logic.task_manager as task_manager, datetime
 from to_do_app_window import Ui_MainWindow
 from administrator_view import Ui_AdministratorMainWindow
 from add_user_window import Ui_AddUserWindow

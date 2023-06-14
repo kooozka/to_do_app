@@ -8,7 +8,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QMainWindow,
     QPushButton, QSizePolicy, QStatusBar, QWidget, QMessageBox)
 from to_do_app_window import Ui_MainWindow
-import data_manager, sqlite3
+import logic.data_manager as data_manager, sqlite3
 from center_window import center
 
 class Ui_AddUserWindow(object):
